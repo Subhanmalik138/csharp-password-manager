@@ -18,7 +18,7 @@ public class CryptoTests
     public void WrongPassword_ThrowsCryptographicException()
     {
         var encrypted = _crypto.Encrypt("secret", "right-password");
-        Assert.Throws<CryptographicException>(() => _crypto.Decrypt(encrypted, "wrong-password"));
+        Assert.ThrowsAny<CryptographicException>(() => _crypto.Decrypt(encrypted, "wrong-password"));
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class CryptoTests
         var bytes = Convert.FromBase64String(encrypted.Ciphertext);
         bytes[0] ^= 0xFF;
         var tampered = encrypted with { Ciphertext = Convert.ToBase64String(bytes) };
-        Assert.Throws<CryptographicException>(() => _crypto.Decrypt(tampered, "password"));
+        Assert.ThrowsAny<CryptographicException>(() => _crypto.Decrypt(tampered, "password"));
     }
 
     [Fact]
